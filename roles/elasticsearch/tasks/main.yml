@@ -1,0 +1,29 @@
+---
+
+- name: Download Elasticsearch
+  get_url:
+    url: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elasticsearch_version }}-linux-x86_64.tar.gz"
+    dest: "/tmp/elasticsearch.tar.gz"
+
+- name: Extract Elasticsearch tarball
+  unarchive:
+    src: "/tmp/elasticsearch.tar.gz"
+    dest: "/usr/local/share"
+    remote_src: yes
+    creates: "/usr/local/share/elasticsearch/bin"
+
+- name: Copy Elasticsearch systemd service file
+  template:
+    src: elasticsearch.service.j2
+    dest: /etc/systemd/system/elasticsearch.service
+    mode: '0644'
+
+- name: Reload systemd to pick up elasticsearch service
+  systemd:
+    daemon_reload: yes
+
+- name: Ensure Elasticsearch service is running and enabled
+  systemd:
+    name: elasticsearch
+    state: started
+    enabled: yes

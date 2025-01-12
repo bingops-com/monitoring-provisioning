@@ -1,0 +1,32 @@
+---
+
+- name: Bootstrap playbook
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - ssh
+    #- firewall
+
+- name: Setup Metrics VM
+  hosts: metrics
+  become: yes
+  remote_user: "{{ new_admin_user }}"
+  roles:
+    - prometheus
+    - node_exporter
+
+- name: Setup Logs VM
+  hosts: logs
+  become: yes
+  remote_user: "{{ new_admin_user }}"
+  roles:
+    - elasticsearch
+    - logstash
+
+- name: Setup Visualization VM
+  hosts: visualisation
+  become: yes
+  remote_user: "{{ new_admin_user }}"
+  roles:
+    - grafana
