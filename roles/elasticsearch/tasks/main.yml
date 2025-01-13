@@ -1,29 +1,29 @@
 ---
 
-- name: Download Elasticsearch
-  get_url:
-    url: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{{ elasticsearch_version }}-linux-x86_64.tar.gz"
-    dest: "/tmp/elasticsearch.tar.gz"
+- name: Add Elasticsearch GPG key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
 
-- name: Extract Elasticsearch tarball
-  unarchive:
-    src: "/tmp/elasticsearch.tar.gz"
-    dest: "/usr/local/share"
-    remote_src: yes
-    creates: "/usr/local/share/elasticsearch/bin"
+- name: Add Elasticsearch repository
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/{{ elasticsearch_version.split('.')[0] }}.x/apt stable main"
+    state: present
+    filename: "elastic-{{ elasticsearch_version.split('.')[0] }}.x"
 
-- name: Copy Elasticsearch systemd service file
-  template:
-    src: elasticsearch.service.j2
-    dest: /etc/systemd/system/elasticsearch.service
-    mode: '0644'
+- name: Update apt cache
+  apt:
+    update_cache: yes
 
-- name: Reload systemd to pick up elasticsearch service
-  systemd:
-    daemon_reload: yes
+- name: Install Elasticsearch and dependencies
+  apt:
+    name:
+      - apt-transport-https
+      - default-jre
+      - "elasticsearch={{ elasticsearch_version }}"
+    state: present
 
-- name: Ensure Elasticsearch service is running and enabled
+- name: Restart Elasticsearch service
   systemd:
     name: elasticsearch
-    state: started
-    enabled: yes
+    state: restarted

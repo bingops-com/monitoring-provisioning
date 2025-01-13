@@ -1,34 +1,35 @@
 ---
 
-- name: Download Logstash
-  get_url:
-    url: "https://github.com/elastic/logstash/archive/refs/tags/v{{ logstash_version }}.tar.gz"
-    dest: "/tmp/logstash.tar.gz"
+- name: Add Elasticsearch GPG key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
 
-- name: Extract Logstash tarball
-  unarchive:
-    src: "/tmp/logstash.tar.gz"
-    dest: "/usr/local/share"
-    remote_src: yes
+- name: Add Elasticsearch repository
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/{{ logstash_version.split('.')[0] }}.x/apt stable main"
+    state: present
+    filename: "elastic-{{ logstash_version.split('.')[0] }}.x"
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Logstash and dependencies
+  apt:
+    name:
+      - apt-transport-https
+      - default-jre
+      - "logstash=1:{{ logstash_version }}-1"
+    state: present
 
 - name: Deploy Logstash configuration files
   template:
     src: logstash.conf.j2
-    dest: "/usr/local/share/logstash-{{ logstash_version }}/config/logstash.conf"
+    dest: "/etc/logstash/conf.d/logstash.conf"
     mode: '0644'
 
-- name: Copy Logstash systemd service file
-  template:
-    src: logstash.service.j2
-    dest: /etc/systemd/system/logstash.service
-    mode: '0644'
-
-- name: Reload systemd to pick up Logstash service
-  systemd:
-    daemon_reload: yes
-
-- name: Ensure Logstash service is running and enabled
+- name: Restart Logstash service
   systemd:
     name: logstash
-    state: started
-    enabled: yes
+    state: restarted
