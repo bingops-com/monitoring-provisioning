@@ -3,6 +3,17 @@
 - name: Install Grafana
   ansible.builtin.include_tasks: install.yml
 
+- name: Check Grafana API readiness
+  ansible.builtin.uri:
+    url: "http://{{ grafana_ip }}:3000/api/health"
+    method: GET
+    status_code: 200
+    validate_certs: false
+  register: grafana_health
+  retries: 5
+  delay: 5
+  until: grafana_health.status == 200
+
 - name: Setup Grafana Datasources
   ansible.builtin.include_tasks: datasources.yml
 
