@@ -22,6 +22,7 @@
       - default-jre
       - "logstash=1:{{ logstash_version }}-1"
     state: present
+    force: yes
 
 - name: Deploy Logstash configuration files
   template:
