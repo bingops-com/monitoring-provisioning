@@ -1,0 +1,8 @@
+[metrics]
+metrics ansible_host=192.168.1.150
+
+[logs]
+logs ansible_host=192.168.1.151
+
+[visualisation]
+grafana ansible_host=192.168.1.152

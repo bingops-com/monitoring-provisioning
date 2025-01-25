@@ -1,0 +1,30 @@
+---
+
+- name: Add Elasticsearch GPG key
+  ansible.builtin.apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Elasticsearch repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/{{ elasticsearch_version.split('.')[0] }}.x/apt stable main"
+    state: present
+    filename: "elastic-{{ elasticsearch_version.split('.')[0] }}.x"
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Elasticsearch and dependencies
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - default-jre
+      - "elasticsearch={{ elasticsearch_version }}"
+    state: present
+    force: true
+
+- name: Restart Elasticsearch service
+  ansible.builtin.systemd:
+    name: elasticsearch
+    state: restarted

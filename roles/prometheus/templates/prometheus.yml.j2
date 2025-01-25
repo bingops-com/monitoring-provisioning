@@ -1,0 +1,13 @@
+---
+global:
+  scrape_interval: {{ prometheus_scrape_interval }}s # How often to scrape targets by default.
+
+scrape_configs:
+  - job_name: "node_exporter"
+    static_configs:
+{% for item in prometheus_node_exporter_targets %}
+      - targets:
+          - "{{ item.target }}"
+        labels:
+          hostname: "{{ item.hostname }}"
+{% endfor %}

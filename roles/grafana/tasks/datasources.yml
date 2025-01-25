@@ -1,0 +1,13 @@
+---
+
+- name: Import Prometheus Datasource to Grafana
+  community.grafana.grafana_datasource:
+    name: "prometheus"
+    grafana_url: "http://{{ grafana_ip }}:3000"
+    grafana_user: "{{ grafana_admin_user }}"
+    grafana_password: "{{ grafana_admin_password }}"
+    access: proxy
+    ds_type: "prometheus"
+    ds_url: "http://{{ metrics_ip }}:9090"
+    org_id: "1"
+    state: present

@@ -1,0 +1,19 @@
+---
+
+prometheus_version: "2.26.0"
+
+prometheus_scrape_interval: "5" # Time in seconds
+
+prometheus_node_exporter_targets:
+  - target: "192.168.1.100:9100"
+    hostname: "PVE"
+  - target: "192.168.1.120:9100"
+    hostname: "Web"
+  - target: "192.168.1.130:9100"
+    hostname: "PZomboid"
+  - target: "192.168.1.150:9100"
+    hostname: "Metrics"
+  - target: "192.168.1.151:9100"
+    hostname: "Logs"
+  - target: "192.168.1.152:9100"
+    hostname: "Grafana"
