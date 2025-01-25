@@ -2,23 +2,23 @@
 
 - name: Bootstrap playbook
   hosts: all
-  become: yes
+  become: true
   remote_user: ubuntu
   roles:
     - ssh
-    #- firewall
+    # - firewall
     - node_exporter
 
 - name: Setup Metrics VM
   hosts: metrics
-  become: yes
+  become: true
   remote_user: "{{ new_admin_user }}"
   roles:
     - prometheus
 
 - name: Setup Logs VM
   hosts: logs
-  become: yes
+  become: true
   remote_user: "{{ new_admin_user }}"
   roles:
     - elasticsearch
@@ -26,7 +26,7 @@
 
 - name: Setup Visualization VM
   hosts: visualisation
-  become: yes
+  become: true
   remote_user: "{{ new_admin_user }}"
   roles:
     - grafana

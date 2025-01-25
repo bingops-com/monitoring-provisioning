@@ -1,36 +1,32 @@
 ---
 
 - name: Add Elasticsearch GPG key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     state: present
 
 - name: Add Elasticsearch repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb https://artifacts.elastic.co/packages/{{ logstash_version.split('.')[0] }}.x/apt stable main"
     state: present
     filename: "elastic-{{ logstash_version.split('.')[0] }}.x"
 
 - name: Update apt cache
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
 
 - name: Install Logstash and dependencies
-  apt:
+  ansible.builtin.apt:
     name:
       - apt-transport-https
       - default-jre
       - "logstash=1:{{ logstash_version }}-1"
     state: present
-    force: yes
+    force: true
 
 - name: Deploy Logstash configuration files
-  template:
+  ansible.builtin.template:
     src: logstash.conf.j2
     dest: "/etc/logstash/conf.d/logstash.conf"
     mode: '0644'
-
-- name: Restart Logstash service
-  systemd:
-    name: logstash
-    state: restarted
+  notify: Restart Logstash service

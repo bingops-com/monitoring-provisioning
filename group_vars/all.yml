@@ -1,3 +1,7 @@
 ---
 
 new_admin_user: "bingo"
+
+grafana_ip: "{{ hostvars['grafana']['ansible_host'] }}"
+metrics_ip: "{{ hostvars['metrics']['ansible_host'] }}"
+logs_ip: "{{ hostvars['logs']['ansible_host'] }}"

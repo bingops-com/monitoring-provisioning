@@ -1,10 +1,10 @@
 ---
 
 - name: Install Grafana
-  include_tasks: install.yml
+  ansible.builtin.include_tasks: install.yml
 
 - name: Setup Grafana Datasources
-  include_tasks: datasources.yml
+  ansible.builtin.include_tasks: datasources.yml
 
 - name: Setup Grafana Dashboards
-  include_tasks: dashboards.yml
+  ansible.builtin.include_tasks: dashboards.yml
