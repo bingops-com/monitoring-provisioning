@@ -1,7 +1,7 @@
 # `main.tf` variables definition
 
 variable "proxmox_api_url" {
-  type = string
+  type        = string
   description = "Proxmox API URL 'https://ip:port'"
 }
 
@@ -14,24 +14,24 @@ variable "proxmox_api_token" {
 # `node.tf` variables definition
 
 variable "node_name" {
-  type = string
+  type        = string
   description = "Proxmox node name"
 }
 
 variable "node_pool" {
-  type = string
+  type        = string
   description = "Proxmox node pool"
 }
 
 variable "nodes" {
   type = map(object({
-    host_ip         : string
-    gw              : string
-    vm_id           : number
-    cores           : number
-    memory          : number
-    network_bridge  : string
-    role            : string
+    host_ip : string
+    gw : string
+    vm_id : number
+    cores : number
+    memory : number
+    network_bridge : string
+    role : string
   }))
 }
 
@@ -41,11 +41,11 @@ variable "template_vm_id" {
 }
 
 variable "datastore" {
-  type = string
+  type        = string
   description = "Proxmox datastore name"
 }
 
 variable "ssh_key" {
-  type = string
+  type        = string
   description = "SSH public key"
 }

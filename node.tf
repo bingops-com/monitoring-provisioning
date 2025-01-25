@@ -7,8 +7,8 @@ resource "proxmox_virtual_environment_vm" "node" {
   pool_id     = var.node_pool
   description = "VM for ${each.value.role}"
 
-  started   = true
-  on_boot   = true
+  started = true
+  on_boot = true
 
   clone {
     vm_id        = var.template_vm_id  # Replace with actual VM ID of the template if needed
@@ -55,7 +55,7 @@ resource "proxmox_virtual_environment_vm" "node" {
   }
 
   network_device {
-    bridge   = each.value.network_bridge
-    model    = "virtio"
+    bridge = each.value.network_bridge
+    model  = "virtio"
   }
 }

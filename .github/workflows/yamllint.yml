@@ -1,6 +1,13 @@
 name: yamllint
-on: [push, pull_request]
-
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 jobs:
   yamllint:
     name: YAML Linting
