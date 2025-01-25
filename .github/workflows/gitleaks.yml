@@ -22,7 +22,9 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        uses: zricethezav/gitleaks-action@v1
+        uses: zricethezav/gitleaks-action@v2
         with:
           verbose: true
           redacted: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
