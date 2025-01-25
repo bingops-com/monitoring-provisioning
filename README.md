@@ -36,11 +36,17 @@ cd monitoring-provisioning
 Create a `credentials.auto.tfvars` file with the following content:
 
 ```hcl
-proxmox_api_url = "https://192.168.1.100:8006"
-proxmox_api_token = "your-api-token"
+proxmox_api_url   = "https://192.168.1.100:8006"  # Your Proxmox IP Address
+proxmox_api_token = "terraform@pve!terraform=****"  # API Token ID
+
+ssh_key = "ssh-rsa AAAA..."
+```
+
+Update `terraform.tfvars` with your Proxmox node name and the name of the pool you want the VMs to be in:
+
+```hcl
 node_name = "homelab"
 node_pool = "Monitoring"
-ssh_key = "your-ssh-public-key"
 ```
 
 Initialize and apply Terraform:
