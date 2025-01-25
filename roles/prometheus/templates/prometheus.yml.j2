@@ -1,6 +1,13 @@
+---
 global:
-  scrape_interval: 15s
+  scrape_interval: {{ prometheus_scrape_interval }}s # How often to scrape targets by default.
+
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: "node_exporter"
     static_configs:
-      - targets: ['localhost:9090']
+{% for item in prometheus_node_exporter_targets %}
+      - targets:
+          - "{{ item.target }}"
+        labels:
+          hostname: "{{ item.hostname }}"
+{% endfor %}
