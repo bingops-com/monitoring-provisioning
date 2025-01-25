@@ -1,0 +1,11 @@
+---
+
+- name: Import Prometheus Datasource to Grafana
+  community.grafana.grafana_datasource:
+    name: "prometheus"
+    grafana_url: "http://{{ ansible_default_ipv4.address }}:3000"
+    grafana_user: "{{ grafana_admin_user }}"
+    grafana_password: "{{ grafana_admin_password }}"
+    ds_type: prometheus
+    ds_url: "http://{{ hostvars['metrics']['ansible_host'] }}:9090"
+    state: present

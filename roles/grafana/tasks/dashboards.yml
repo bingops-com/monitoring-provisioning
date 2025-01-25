@@ -1,0 +1,10 @@
+---
+
+- name: Import Node Exporter dashboard to Grafana
+  community.grafana.grafana_dashboard:
+    grafana_url: "http://{{ ansible_default_ipv4.address }}:3000"
+    grafana_user: "{{ grafana_admin_user }}"
+    grafana_password: "{{ grafana_admin_password }}"
+    state: present
+    overwrite: true
+    dashboard_url: "https://grafana.com/api/dashboards/{{ grafana_node_exporter_dashboard_id }}/revisions/latest/download"
