@@ -30,6 +30,7 @@ variable "nodes" {
     vm_id : number
     cores : number
     memory : number
+    storage: number
     network_bridge : string
     role : string
   }))

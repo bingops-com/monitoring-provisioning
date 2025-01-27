@@ -10,6 +10,7 @@ nodes = {
     vm_id          = 150
     cores          = 4
     memory         = 8192 # 8GB
+    storage        = 100 # GB
     network_bridge = "vmbr0"
     role           = "master"
   },
@@ -19,6 +20,7 @@ nodes = {
     vm_id          = 151
     cores          = 4
     memory         = 8192 # 8GB
+    storage        = 200 # GB
     network_bridge = "vmbr0"
     role           = "master"
   },
@@ -28,6 +30,7 @@ nodes = {
     vm_id          = 152
     cores          = 4
     memory         = 4096 # 4GB
+    storage        = 40 # GB
     network_bridge = "vmbr0"
     role           = "master"
   }
