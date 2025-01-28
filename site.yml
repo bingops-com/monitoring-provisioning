@@ -15,6 +15,8 @@
   remote_user: "{{ new_admin_user }}"
   roles:
     - prometheus
+  tags:
+    - metrics
 
 - name: Setup Logs VM
   hosts: logs
@@ -23,6 +25,9 @@
   roles:
     - elasticsearch
     - logstash
+    - kibana
+  tags:
+    - logs
 
 - name: Setup Visualization VM
   hosts: visualisation
@@ -30,3 +35,5 @@
   remote_user: "{{ new_admin_user }}"
   roles:
     - grafana
+  tags:
+    - visualisation

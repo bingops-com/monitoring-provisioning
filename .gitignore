@@ -8,3 +8,4 @@ credentials.auto.tfvars
 
 # Ansible
 group_vars/visualisation.yml
+groups_vars/logs.yml
