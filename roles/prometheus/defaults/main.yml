@@ -17,3 +17,7 @@ prometheus_node_exporter_targets:
     hostname: "Logs"
   - target: "192.168.1.152:9100"
     hostname: "Grafana"
+
+prometheus_nginx_exporter_targets:
+  - target: "192.168.1.120:9113"
+    hostname: "Web"
