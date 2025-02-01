@@ -11,7 +11,7 @@ resource "proxmox_virtual_environment_vm" "node" {
   on_boot = true
 
   clone {
-    vm_id        = var.template_vm_id  # Replace with actual VM ID of the template if needed
+    vm_id        = var.template_vm_id
     datastore_id = var.datastore
   }
 
@@ -27,7 +27,7 @@ resource "proxmox_virtual_environment_vm" "node" {
     ip_config {
       ipv4 {
         address = each.value.host_ip
-        gateway = each.value.gw
+        gateway = var.network_gateway
       }
     }
 
@@ -50,12 +50,13 @@ resource "proxmox_virtual_environment_vm" "node" {
   disk {
     datastore_id = var.datastore
     file_format  = "raw"
-    size         = each.value.storage # GB
+    size         = each.value.storage
     interface    = "scsi0"
   }
 
   network_device {
-    bridge = each.value.network_bridge
-    model  = "virtio"
+    bridge   = var.network_name
+    model    = "virtio"
+    vlan_id  = var.vlan_id
   }
 }
