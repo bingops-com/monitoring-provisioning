@@ -1,4 +1,6 @@
+---
 name: yamllint
+
 on:
   push:
     branches:
@@ -8,6 +10,7 @@ on:
       - opened
       - synchronize
       - reopened
+
 jobs:
   yamllint:
     name: YAML Linting
