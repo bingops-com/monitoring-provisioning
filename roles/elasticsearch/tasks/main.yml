@@ -24,7 +24,9 @@
     state: present
     force: true
 
-- name: Restart Elasticsearch service
-  ansible.builtin.systemd:
-    name: elasticsearch
-    state: restarted
+- name: Deploy Elasticsearch configuration
+  ansible.builtin.template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    mode: '0644'
+  notify: Restart Elasticsearch service
