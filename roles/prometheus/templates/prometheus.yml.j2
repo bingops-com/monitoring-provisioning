@@ -2,6 +2,12 @@
 global:
   scrape_interval: {{ prometheus_scrape_interval }}s
 
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        - localhost:9093
+
 scrape_configs:
   - job_name: "node_exporter"
     static_configs:

@@ -1,1 +1,6 @@
 ---
+
+# alertmanager_critical_webhook_url: "https://discord.com/api/webhooks/XXXXXXXX/YYYYYYYY"
+# alertmanager_warning_webhook_url: "https://discord.com/api/webhooks/XXXXXXXX/YYYYYYYY"
+# alertmanager_info_webhook_url: "https://discord.com/api/webhooks/XXXXXXXX/YYYYYYYY"
+# alertmanager_default_webhook_url: "https://discord.com/api/webhooks/XXXXXXXX/YYYYYYYY"

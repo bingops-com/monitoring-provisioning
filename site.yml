@@ -14,6 +14,7 @@
   become: true
   remote_user: "{{ new_admin_user }}"
   roles:
+    - alertmanager
     - prometheus
   tags:
     - metrics
