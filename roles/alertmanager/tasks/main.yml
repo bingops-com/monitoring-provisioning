@@ -50,15 +50,6 @@
     group: alertmanager
     mode: '0644'
 
-- name: Deploy Prometheus alert rules
-  ansible.builtin.template:
-    src: alert_rules.yml.j2
-    dest: /etc/prometheus/alert_rules.yml
-    owner: prometheus
-    group: prometheus
-    mode: '0644'
-  notify: Restart Prometheus
-
 - name: Deploy Alertmanager systemd service file
   ansible.builtin.template:
     src: alertmanager.service.j2

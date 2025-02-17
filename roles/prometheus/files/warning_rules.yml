@@ -1,0 +1,70 @@
+---
+groups:
+  - name: warning_alerts
+    rules:
+      # CPU
+      - alert: HostHighCpuLoad
+        expr: (avg by (instance) (rate(node_cpu_seconds_total{mode!="idle"}[2m]))) > .80
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host high CPU load (instance {{ $labels.instance }})
+          description: "CPU load is > 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+      - alert: HighLoadAverage
+        expr: node_load1 > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High system load on {{ $labels.instance }}"
+          description: "Load average is above 5 for more than 5 minutes."
+
+      # RAM & SWAP
+      - alert: HighMemoryUsage
+        expr: node_memory_Active_bytes / node_memory_MemTotal_bytes * 100 > 90
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is above 90% for more than 2 minutes."
+
+      - alert: SwapUsageWarning
+        expr: (node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) / node_memory_SwapTotal_bytes * 100 > 70
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Swap usage warning on {{ $labels.instance }}"
+          description: "Swap usage is above 70%. Consider checking memory usage."
+
+      # Disk
+      - alert: DiskReadLatency
+        expr: rate(node_disk_read_time_seconds_total[5m]) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High disk read latency on {{ $labels.instance }}"
+          description: "Disk read latency is unusually high (>0.5s)."
+
+      - alert: DiskWriteLatency
+        expr: rate(node_disk_write_time_seconds_total[5m]) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High disk write latency on {{ $labels.instance }}"
+          description: "Disk write latency is unusually high (>0.5s)."
+
+      # Temperature
+      - alert: HostPhysicalComponentTooHot
+        expr: node_hwmon_temp_celsius > node_hwmon_temp_max_celsius
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Host physical component too hot (instance {{ $labels.instance }})
+          description: "Physical hardware component too hot\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"

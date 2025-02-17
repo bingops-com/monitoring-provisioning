@@ -1,0 +1,91 @@
+---
+groups:
+  - name: critical_alerts
+    rules:
+      # Instance status
+      - alert: InstanceDown
+        expr: up == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.instance }} down"
+          description: "The instance {{ $labels.instance }} is not responding."
+
+      # Service
+      - alert: ServiceUnhealthy
+        expr: probe_success == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service is down on {{ $labels.instance }}"
+          description: "Service health check failed for more than 2 minutes."
+
+      # Temperature
+      - alert: HighTemperature
+        expr: node_hwmon_temp_celsius > 80
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High temperature on {{ $labels.instance }}"
+          description: "System temperature is above 80°C. Possible overheating detected."
+
+      - alert: HostNodeOvertemperatureAlarm
+        expr: ((node_hwmon_temp_crit_alarm_celsius == 1) or (node_hwmon_temp_alarm == 1))
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host node overtemperature alarm (instance {{ $labels.instance }})
+          description: "Physical node temperature alarm triggered\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+      # RAM & SWAP
+      - alert: SwapUsageCritical
+        expr: (node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) / node_memory_SwapTotal_bytes * 100 > 90
+        for: 3m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High swap usage on {{ $labels.instance }}"
+          description: "Swap usage is above 90%. System may experience slowdowns."
+
+      - alert: SystemOOMKill
+        expr: increase(node_vmstat_oom_kill[5m]) > 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "OOM Kill detected on {{ $labels.instance }}"
+          description: "The system has performed an Out-of-Memory (OOM) kill, indicating high memory pressure."
+
+      # Disk
+      - alert: HostOutOfDiskSpace
+        expr: (node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"} / node_filesystem_size_bytes < .10 and on (instance, device, mountpoint) node_filesystem_readonly == 0)
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Host out of disk space (instance {{ $labels.instance }})
+          description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+      # Network
+      - alert: NetworkPacketLoss
+        expr: rate(node_network_receive_drop_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Network packet loss detected on {{ $labels.instance }}"
+          description: "More than 10 dropped packets per second detected."
+
+      # HTTP
+      - alert: TooManyRequests
+        expr: rate(http_requests_total[5m]) > 1000
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High HTTP request rate on {{ $labels.instance }}"
+          description: "More than 1000 HTTP requests per second detected in the last 5 minutes."

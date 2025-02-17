@@ -50,6 +50,18 @@
     group: prometheus
     mode: '0644'
 
+- name: Copy Prometheus rules
+  ansible.builtin.copy:
+    src: "files/{{ item }}_rules.yml"
+    dest: "/etc/prometheus/{{ item }}_rules.yml"
+    owner: prometheus
+    group: prometheus
+    mode: '0644'
+  loop:
+    - critical
+    - warning
+    - info
+
 - name: Deploy Prometheus systemd service file
   ansible.builtin.template:
     src: prometheus.service.j2

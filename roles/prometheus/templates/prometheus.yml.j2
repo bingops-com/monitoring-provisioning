@@ -8,6 +8,11 @@ alerting:
       - targets:
         - localhost:9093
 
+rule_files:
+  - "/etc/prometheus/critical_rules.yml"
+  - "/etc/prometheus/warning_rules.yml"
+  - "/etc/prometheus/info_rules.yml"
+
 scrape_configs:
   - job_name: "node_exporter"
     static_configs:

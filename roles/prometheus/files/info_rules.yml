@@ -1,0 +1,33 @@
+---
+groups:
+  - name: info_alerts
+    rules:
+      # Disk
+      - alert: HighDiskUsage
+        expr: node_filesystem_avail_bytes / node_filesystem_size_bytes * 100 < 10
+        for: 5m
+        labels:
+          severity: info
+        annotations:
+          summary: "Low disk space on {{ $labels.instance }}"
+          description: "Disk space is below 10% available."
+
+      # Network
+      - alert: NetworkInterfaceFlapping
+        expr: changes(node_network_up[10m]) > 2
+        for: 10m
+        labels:
+          severity: info
+        annotations:
+          summary: "Network interface flapping on {{ $labels.instance }}"
+          description: "A network interface has been flapping in the last 10 minutes."
+
+      # Reboot
+      - alert: SystemUptime
+        expr: node_time_seconds - node_boot_time_seconds < 600
+        for: 1m
+        labels:
+          severity: info
+        annotations:
+          summary: "System recently rebooted on {{ $labels.instance }}"
+          description: "The system uptime is less than 10 minutes."
